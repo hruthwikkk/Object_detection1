@@ -1,3 +1,4 @@
+import keyboard
 import numpy as np
 import argparse
 import cv2 as cv
@@ -166,19 +167,20 @@ if __name__ == '__main__':
             height, width = frame.shape[:2]
 
             if count == 0:
-                frame, boxes, confidences, classids, idxs = infer_image(net, layer_names, \
+                frame,txt, boxes, confidences, classids, idxs = infer_image(net, layer_names, \
                                                                         height, width, frame, colors, labels, FLAGS)
                 count += 1
             else:
-                frame, boxes, confidences, classids, idxs = infer_image(net, layer_names, \
+                frame,txt, boxes, confidences, classids, idxs = infer_image(net, layer_names, \
                                                                         height, width, frame, colors, labels, FLAGS,
                                                                         boxes, confidences, classids, idxs, infer=False)
                 count = (count + 1) % 6
 
             cv.imshow('webcam', frame)
 
-
             if cv.waitKey(1) & 0xFF == ord('q'):
                 break
+            elif cv.waitKey(1) & 0xFF == ord('p'):
+                speak(txt)
         vid.release()
         cv.destroyAllWindows()

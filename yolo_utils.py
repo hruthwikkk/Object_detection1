@@ -4,6 +4,9 @@ import cv2 as cv
 import subprocess
 import time
 import os
+import keyboard
+import pyttsx3
+
 
 def show_image(img):
     cv.imshow("Image", img)
@@ -25,7 +28,8 @@ def draw_labels_and_boxes(img, boxes, confidences, classids, idxs, colors, label
             text = "{}: {:4f}".format(labels[classids[i]], confidences[i])
             cv.putText(img, text, (x, y-5), cv.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-    return img
+
+    return img,text
 
 
 def generate_boxes_confidences_classids(outs, height, width, tconf):
@@ -91,6 +95,6 @@ def infer_image(net, layer_names, height, width, img, colors, labels, FLAGS,
         raise '[ERROR] Required variables are set to None before drawing boxes on images.'
         
     # Draw labels and boxes on the image
-    img = draw_labels_and_boxes(img, boxes, confidences, classids, idxs, colors, labels)
+    img,txt = draw_labels_and_boxes(img, boxes, confidences, classids, idxs, colors, labels)
 
-    return img, boxes, confidences, classids, idxs
+    return img,txt, boxes, confidences, classids, idxs
